@@ -1147,14 +1147,17 @@ wscat -c wss://${req.headers.host}/ID
   }
 }
 
-// Start server jika dijalankan langsung
+// Di bagian akhir server.js, ubah:
 if (require.main === module) {
   const server = new GatewayServer();
   
   // Load environment variables
-  require('dotenv').config();
+  if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+  }
   
-  server.start();
+  const port = process.env.PORT || 3000;
+  server.start(port);
 }
 
 module.exports = GatewayServer;
